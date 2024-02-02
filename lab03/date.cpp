@@ -3,6 +3,7 @@
 
 bool date::isleapyear( unsigned int y )
 {
+    return (y % 4 == 0 && y % 100 != 0) || (y % 400 == 0);
 }
 
 // This is called 'anonymous namespace'. It prevents that
@@ -33,13 +34,14 @@ bool date::ispossible( unsigned int year, unsigned int month, unsigned int day )
     int numberOfDays;
 
     if ( month > 0 && month < 13 ) {
+
         if ( date::isleapyear(year) ) {
             numberOfDays = leapyear[month];
         } else {
             numberOfDays = normalyear[month];
         }
 
-        if (day > 0 && day < numberOfDays) {
+        if (day > 0 && day <= numberOfDays) {
             return 1;
         } else {
             return  0;
@@ -101,11 +103,10 @@ unsigned int date::daysinmonth( unsigned int y, unsigned int m )
 
 unsigned int date::days1jan( ) const
 {
-    int numberOfDays = 0;
-    numberOfDays += day;
+    int numberOfDays = day - 1; // since it starts from 1st January
 
     for (int i = month - 1; i > 0; i--) {
-        numberOfDays += daysinmonth(year, month);
+        numberOfDays += daysinmonth(year, i);
     }
     return numberOfDays;
 }
@@ -114,20 +115,20 @@ void date::setdays1jan( unsigned int nrdays )
 {
     int leftDays = nrdays;
 
-    if (isleapyear(year)) {
+    if (isleapyear(year) && nrdays != 0) {
         for (int m = 1; m < 13; m++) {
             leftDays -= leapyear[m];
             if (leftDays <= 0) {
-                day = leftDays;
+                day = nrdays;
                 month = m;
                 break;
             }
         }
-    } else {
+    } else if (!isleapyear(year) && nrdays != 0) {
         for (int m = 1; m < 13; m++) {
             leftDays -= normalyear[m];
             if (leftDays < 0) {
-                day = leftDays;
+                day = nrdays;
                 month = m;
                 break;
             }

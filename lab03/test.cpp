@@ -32,8 +32,8 @@ int main( int argc, char* argv [ ] )
 
    for( unsigned int i = 0; i < 365; ++ i )
    {
-      date d1 = { 1992, 1, 1 };
-      date d2 = d1; 
+      d1 = { 1992, 1, 1 };
+      d2 = d1;
       d2. setdays1jan(i);
       if( d2. days1jan( ) != i )
          throw std::logic_error( "something went wrong with day counting" );
