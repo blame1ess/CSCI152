@@ -38,7 +38,7 @@ struct treenode
    //using valcmp = case_insensitive_cmp;
 
    using valtype = int;
-   using valcmp = standard_cmp< valtype > ;
+   using valcmp = standard_cmp< valtype >;
 
    valtype val; 
    treenode* left;

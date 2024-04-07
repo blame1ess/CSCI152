@@ -48,8 +48,10 @@ int main( int argc, char* argv[ ] )
 #endif
 
 #if 0
-   Some more tests with std::string:
-   Make sure that your set is case-insensitive.
+   //Some more tests with std::string:
+   //Make sure that your set is case-insensitive.
+
+   set small;
    small. insert( "oskemen" );
    std::cout << small.height() << std::endl;
 
@@ -76,28 +78,10 @@ int main( int argc, char* argv[ ] )
    small. checksorted( );
    std::cout << small << "\n"; 
    std::cout << small. size( ) << "\n";
-   If the numbers differ much, the tree is badly balanced.
+
+   /*If the numbers differ much, the tree is badly balanced.*/
    std::cout << "Height is " << small. height( );
    std::cout << " should be approximately " << log_base2( small. size( )) << "\n";
-
-   set small3;
-   set small4; // for assignment
-
-   small3.insert("val1");
-   small3.insert("val2");
-   std::cout << small3;
-
-   auto small2 = small3; // Copy constructor.
-   std::cout << small2 << "\n";
-   std::cout << "size = " << small2. size( ) << "\n";
-   std::cout << "height = " << small2. height( ) << "\n";
-   small4 = small3;      // Assignment.
-   std::cout << small4 << "\n";
-
-   small3 = small3;       // Self assignment.
-
-   return 0;
-
 #endif 
 
 #if 0
@@ -201,13 +185,89 @@ int main( int argc, char* argv[ ] )
     }
     std::cout << tab << "\n";
 #endif
+
+#if 0
+    // test for calibrating remove function
+    set small;
+
+    for (int i = 1; i < 100; ++i) {
+        small.insert(i);
+    }
+    small.remove(1);
+    std::cout << small;
+
+    // removing everything from tree including values not exist
+    for (int i = 0; i < 120; ++i) {
+        small.remove(i);
+    }
+    std::cout << small;
+
+    small.insert(5);
+    small.insert(3);
+    small.insert(6);
+    small.insert(4);
+    small.insert(2);
+    small.remove(5);
+    std::cout << small;
+#endif
+
+#if 0
+    //testing copy-constructor
+    set originalSet;
+    originalSet.insert("a");
+    originalSet.insert("b");
+    originalSet.insert("c");
+
+    set copiedSet(originalSet);
+
+    std::cout << "original set\n";
+    std::cout << originalSet;
+    std::cout << "copied set\n";
+    std::cout << copiedSet;
+
+    originalSet.remove("a");
+    std::cout << "original set\n";
+    std::cout << originalSet;
+    std::cout << "copied set\n";
+    std::cout << copiedSet;
+
+    std::cout << originalSet.contains("c") << std::endl;
+    std::cout << copiedSet.contains("c") << std::endl;
+
+#endif
+
+#if 0
+    // copy constructor check
+    set orgSet;
+    orgSet.insert("ff");
+    orgSet.insert("cc");
+    set copySet = orgSet;
+    std::cout << copySet;
+
+    //assignment operator check
+    set original;
+    original.insert("a");
+    original.insert("b");
+    original.insert("c");
+    original = original;
+    std::cout << original;
+
+    set copy;
+    copy = original;
+    std::cout << copy;
+
+    copy.remove("a");
+    std::cout << original;
+    std::cout << copy;
+#endif
+
+    return 0;
 }
 
 /*
  * Performance table of BST-based set (inputsize/runtime in seconds):
      1000/1.7300e-04     2000/3.8600e-04     4000/6.3700e-04     8000/1.2430e-03     16000/2.8940e-03     32000/6.9920e-03     64000/1.5419e-02     128000/2.5691e-02     256000/5.8683e-02
-
  *
  *
- */
+*/
 

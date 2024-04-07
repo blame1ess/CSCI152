@@ -91,7 +91,11 @@ treenode* makecopy( const treenode* n )
         return nullptr;
     }
 
-    return new treenode(n->val, makecopy(n->left), makecopy(n->right));
+    treenode* newNode = new treenode(n->val);
+    newNode->left = makecopy(n->left);
+    newNode->right = makecopy(n->right);
+
+    return newNode;
 }
 
 
@@ -197,20 +201,27 @@ bool set::remove( const valtype& val )
         return false;
     }
 
-    treenode* toRemove = *target;
+    treenode* toRemove = *target; // node to remove
 
-    if (toRemove->left == nullptr || toRemove->right == nullptr) {
+    if (toRemove->left == nullptr && toRemove->right == nullptr) {
+        *target = nullptr;
+    } else if (toRemove->left == nullptr || toRemove->right == nullptr) {
         treenode* child = (toRemove->left != nullptr) ? toRemove->left : toRemove->right;
         *target = child;
-        delete toRemove;
     } else {
-        treenode** pred = find(&toRemove->left, extractrightmost(&toRemove->left)->val);
+        // approach A from slides
+        treenode** pred = &toRemove->left;
+        while((*pred)->right != nullptr) {
+            pred = &((*pred)->right);
+        }
+
         toRemove->val = (*pred)->val;
         treenode* temp = *pred;
         *pred = (*pred)->left;
-        delete temp;
+        toRemove = temp;
     }
 
+    delete toRemove;
     return true;
 }
 
@@ -252,8 +263,8 @@ set::set( const set& other ) :
 set& set::operator = ( const set& other )
 {
     if (this != &other) {
-        ::deallocate(tr);
-        tr = ::makecopy(other.tr);
+        deallocate(tr);
+        tr = makecopy(other.tr);
     }
 
     return *this;
